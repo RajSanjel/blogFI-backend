@@ -6,7 +6,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const privateKey = process.env.PRIVATE_KEY
-const publicKey = process.env.PUBLIC_KEY
 
 const GenerateJwtToken = ({ id }: { id: string }) => {
     const token = jwt.sign({ userid: id }, privateKey, { expiresIn: 36000, algorithm: "RS512" })
@@ -35,4 +34,30 @@ export async function register(req: Request) {
         console.log(error)
         return { msg: "Internal Server Error" };
     }
+}
+
+export async function login(req: Request) {
+    try {
+        const { emailOrUsername, password } = req.body;
+        if (!emailOrUsername) {
+            return { isSuccess: false, msg: "Invalid Credentials" };
+        }
+        const user = await Users.findOne({ $or: [{ email: emailOrUsername }, { username: emailOrUsername }] })
+        if (!user) {
+            return { isSuccess: false, msg: "Invalid Credentials" };
+        }
+        console.log(password);
+        console.log(user.password)
+        const isMatch = await bcrypt.compare(password, user.password)
+        console.log(isMatch)
+        if (!isMatch) {
+            return { isSuccess: false, msg: "Invalid Credentials" };
+        }
+        const jwtToken = GenerateJwtToken({ id: user.userid })
+        return { isSuccess: true, msg: jwtToken };
+    } catch (err) {
+        console.log(err)
+        return { isSuccess: false, msg: "Internal Server Error" }
+    }
+
 }
