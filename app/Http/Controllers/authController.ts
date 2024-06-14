@@ -6,7 +6,7 @@ const AuthController = {
     register: async (req: Request, res: Response) => {
         try {
             const registerData = (await AuthProvider.register(req)) as any;
-            if (!registerData?.isSuccess) {
+            if (!registerData.isSuccess) {
                 return res.status(400).json({ msg: registerData.msg });
             }
             return res.status(200).json({ msg: registerData.msg });

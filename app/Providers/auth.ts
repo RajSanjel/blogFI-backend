@@ -17,10 +17,10 @@ export async function register(req: Request) {
         const { email, username, fullName, password } = req.body;
         const existingUser = await Users.findOne({ $or: [{ email }, { username }] })
         if (existingUser) {
-            return { msg: "User Already Exists" }
+            return { isSuccess: false, msg: "User Already Exists" }
         }
         if (!email || !username || !fullName || !password) {
-            return { msg: "Unauthorized" }
+            return { isSuccess: false, msg: "Unauthorized" }
         }
         const user = new Users({ email, username, password, fullName });
         const salt = await bcrypt.genSalt(10);
@@ -32,7 +32,7 @@ export async function register(req: Request) {
         };
     } catch (error) {
         console.log(error)
-        return { msg: "Internal Server Error" };
+        return { isSuccess: false, msg: "Internal Server Error" };
     }
 }
 
@@ -46,8 +46,6 @@ export async function login(req: Request) {
         if (!user) {
             return { isSuccess: false, msg: "Invalid Credentials" };
         }
-        console.log(password);
-        console.log(user.password)
         const isMatch = await bcrypt.compare(password, user.password)
         console.log(isMatch)
         if (!isMatch) {
