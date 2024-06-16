@@ -8,21 +8,21 @@ dotenv.config();
 const privateKey = process.env.PRIVATE_KEY
 
 const GenerateJwtToken = ({ id }: { id: string }) => {
-    const token = jwt.sign({ userid: id }, privateKey, { expiresIn: 36000, algorithm: "RS512" })
+    const token = jwt.sign({ userid: id }, privateKey, { algorithm: "RS512" })
     return token;
 }
 
 export async function register(req: Request) {
     try {
-        const { email, username, fullName, password } = req.body;
+        const { email, username, name, password } = req.body;
         const existingUser = await Users.findOne({ $or: [{ email }, { username }] })
         if (existingUser) {
             return { isSuccess: false, msg: "User Already Exists" }
         }
-        if (!email || !username || !fullName || !password) {
+        if (!email || !username || !name || !password) {
             return { isSuccess: false, msg: "Unauthorized" }
         }
-        const user = new Users({ email, username, password, fullName });
+        const user = new Users({ email, username, password, name });
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(password, salt);
         await user.save()
@@ -47,7 +47,6 @@ export async function login(req: Request) {
             return { isSuccess: false, msg: "Invalid Credentials" };
         }
         const isMatch = await bcrypt.compare(password, user.password)
-        console.log(isMatch)
         if (!isMatch) {
             return { isSuccess: false, msg: "Invalid Credentials" };
         }

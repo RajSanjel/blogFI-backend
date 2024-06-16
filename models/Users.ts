@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    fullName: {
+    name: {
         type: String,
         required: true,
         trim: true,
