@@ -1,5 +1,5 @@
 import Users from "../../models/Users"
-import { Request, Response } from "express";
+import { Request } from "express";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from 'dotenv';
@@ -80,4 +80,12 @@ export async function user(req: Request) {
         return { isSuccess: false, msg: "Internal Sever Error" }
     }
 
+}
+
+export async function logout(req: Request) {
+    const token = req.cookies.authToken;
+    if (!token) {
+        return { isSuccess: false, statusCode: 401, msg: "Unauthorized" };
+    }
+    return { isSuccess: true, msg: token }
 }
