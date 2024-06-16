@@ -6,10 +6,14 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const privateKey = process.env.PRIVATE_KEY
-
+const publicKey = process.env.PUBLIC_KEY;
 const GenerateJwtToken = ({ id }: { id: string }) => {
     const token = jwt.sign({ userid: id }, privateKey, { algorithm: "RS512" })
     return token;
+}
+
+type Decoded = {
+    userid: string
 }
 
 export async function register(req: Request) {
@@ -55,6 +59,25 @@ export async function login(req: Request) {
     } catch (err) {
         console.log(err)
         return { isSuccess: false, msg: "Internal Server Error" }
+    }
+
+}
+
+export async function user(req: Request) {
+    const token = req.cookies.authToken;
+    if (!token) {
+        return { isSuccess: false, statusCode: 401, msg: "Unauthorized" };
+    }
+    try {
+        const decoded = jwt.verify(token, publicKey) as Decoded;
+        const user = await Users.findOne({ userid: decoded.userid }).lean()
+        delete user.password;
+        delete user._id;
+        return { isSuccess: true, msg: { user }, }
+
+    } catch (error) {
+        console.log((error as Error).message)
+        return { isSuccess: false, msg: "Internal Sever Error" }
     }
 
 }
