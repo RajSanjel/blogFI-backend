@@ -45,8 +45,10 @@ const AuthController = {
     },
     verifyLogin: async (req: Request, res: Response) => {
         try {
-            const loginData = await AuthProvider.verifyLogin((req));
+            const loginData = await AuthProvider.verifyLogin(req);
+            console.log(!loginData.isSuccess)
             if (!loginData.isSuccess) {
+                console.log("here", !loginData.isSuccess)
                 return res.status(400).json({ msg: loginData.msg })
             }
             return res.status(200).json({ msg: loginData.msg })

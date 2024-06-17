@@ -72,5 +72,5 @@ export async function verifyLogin(req: Request) {
     if (!token) {
         return { isSuccess: false, statusCode: 401, msg: "Unauthorized" }
     }
-    return { isSucess: true, msg: "User is Logged In" };
+    return { isSuccess: true, msg: "User is Logged In" };
 }
