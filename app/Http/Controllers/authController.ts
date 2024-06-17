@@ -30,18 +30,6 @@ const AuthController = {
             return res.status(500).json({ msg: "Internal Server Error" });
         }
     },
-    user: async (req: Request, res: Response) => {
-        try {
-            const userData = await AuthProvider.user(req);
-            if (!userData.isSuccess) {
-                return res.status(userData?.statusCode || 400).json({ msg: userData.msg });
-            }
-            return res.status(200).json({ msg: userData.msg });
-        } catch (error) {
-            console.error((error as Error).message);
-            return res.status(500).json({ msg: "Internal Server Error" });
-        }
-    },
     logout: async (req: Request, res: Response) => {
         try {
             const userData = await AuthProvider.logout(req);
