@@ -16,6 +16,7 @@ type Decoded = {
     userid: string
 }
 
+
 export async function register(req: Request) {
     try {
         const { email, username, name, password } = req.body;
@@ -40,6 +41,7 @@ export async function register(req: Request) {
     }
 }
 
+
 export async function login(req: Request) {
     try {
         const { emailOrUsername, password } = req.body;
@@ -63,6 +65,7 @@ export async function login(req: Request) {
 
 }
 
+
 export async function user(req: Request) {
     const token = req.cookies.authToken;
     if (!token) {
@@ -82,10 +85,19 @@ export async function user(req: Request) {
 
 }
 
+
 export async function logout(req: Request) {
     const token = req.cookies.authToken;
     if (!token) {
         return { isSuccess: false, statusCode: 401, msg: "Unauthorized" };
     }
     return { isSuccess: true, msg: token }
+}
+
+export async function verifyLogin(req: Request) {
+    const token = req.cookies.authToken;
+    if (!token) {
+        return { isSuccess: false, statusCode: 401, msg: "Unauthorized" }
+    }
+    return { isSucess: true, msg: "User is Logged In" };
 }

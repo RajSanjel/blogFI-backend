@@ -54,6 +54,18 @@ const AuthController = {
             console.error((error as Error).message);
             return res.status(500).json({ msg: "Internal Server Error" });
         }
+    },
+    verifyLogin: async (req: Request, res: Response) => {
+        try {
+            const loginData = await AuthProvider.verifyLogin((req));
+            if (!loginData.isSuccess) {
+                return res.status(400).json({ msg: loginData.msg })
+            }
+            return res.status(200).json({ msg: loginData.msg })
+        } catch (error) {
+            console.log((error as Error).message);
+            return res.status(500).json({ msg: "Internal Server Error" });
+        }
     }
 }
 export default AuthController;

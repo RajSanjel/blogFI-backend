@@ -8,6 +8,7 @@ const router: Router = Router()
 router.post("/register", AuthController.register)
 router.post("/login", AuthController.login)
 router.post("/logout", verifyToken, AuthController.logout)
+router.post("/verify", verifyToken, AuthController.verifyLogin)
 router.get("/user", verifyToken, AuthController.user)
 
 
