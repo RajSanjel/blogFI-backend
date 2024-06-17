@@ -25,9 +25,12 @@ export async function register(req: Request) {
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(password, salt);
         await user.save()
+        const newUser = await Users.findOne({ $or: [{ email: user.email }, { username: user.username }] })
+        const jwtToken = GenerateJwtToken({ id: newUser.userid })
         return {
             isSuccess: true,
-            msg: "Registration successful!"
+            msg: "Registration successful!",
+            token: jwtToken
         };
     } catch (error) {
         console.log(error)
