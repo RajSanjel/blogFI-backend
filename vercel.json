@@ -5,7 +5,7 @@
         "src": "app/**/*.ts",
         "use": "@vercel/node",
         "config": {
-          "includeFiles": ["app/**/*", "models/**/*", "routes/**/*"]
+            "includeFiles": ["**/*"]
         }
       }
     ],

@@ -13,7 +13,7 @@
         "*": ["node_modules/*"]
       }
     },
-    "include": ["app/**/*", "models/**/*", "routes/**/*"],
+    "include": ["**/*"],
     "exclude": ["node_modules", "dist"]
   }
   
