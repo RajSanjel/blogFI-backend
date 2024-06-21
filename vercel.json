@@ -2,28 +2,18 @@
     "version": 2,
     "builds": [
       {
-        "src": "/index.ts",
-        "use": "@vercel/node"
+        "src": "app/**/*.ts",
+        "use": "@vercel/node",
+        "config": {
+          "includeFiles": ["app/**/*", "models/**/*", "routes/**/*"]
+        }
       }
     ],
     "routes": [
       {
         "src": "/api/(.*)",
-        "dest": "/index.ts",
-        "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-        "headers": {
-          "Access-Control-Allow-Credentials": "true",
-          "Access-Control-Allow-Origin": "https://blog-fi.vercel.app",
-          "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
-          "Access-Control-Allow-Headers": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-        }
-      },
-      {
-        "src": "/(.*)",
-        "dest": "/index.ts",
-        "headers": {
-          "Access-Control-Allow-Origin": "*"
-        }
+        "dest": "/app/routes/api.ts"
       }
     ]
   }
+  

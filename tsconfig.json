@@ -1,5 +1,5 @@
 {
-  "compilerOptions": {
+    "compilerOptions": {
       "module": "commonjs",
       "esModuleInterop": true,
       "allowSyntheticDefaultImports": true,
@@ -7,11 +7,13 @@
       "noImplicitAny": true,
       "moduleResolution": "node",
       "sourceMap": true,
-      "outDir": "dist",
+      "outDir": "./dist",
       "baseUrl": ".",
       "paths": {
-          "*": ["node_modules/*", "src/types/*"]
+        "*": ["node_modules/*"]
       }
-  },
-  "include": ["./**/*"]
+    },
+    "include": ["app/**/*", "models/**/*", "routes/**/*"],
+    "exclude": ["node_modules", "dist"]
   }
+  
