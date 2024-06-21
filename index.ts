@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use("/", cors({
-    origin: ["http://localhost:5173", "http://localhost:4173"],
+    origin: ["http://localhost:5173", "http://localhost:4173", "https://blog-fi.vercel.app"],
     credentials: true,
     methods: ['GET', 'POST', 'OPTIONS'],
     optionsSuccessStatus: 204,
