@@ -10,7 +10,8 @@ const AuthController = {
                 return res.status(400).json({ msg: registerData.msg });
             }
             res.cookie("authToken", registerData.token, {
-                httpOnly: true, maxAge: 90000000000
+                httpOnly: true, maxAge: 90000000000, sameSite: 'none', secure: true
+
             })
             return res.status(200).json({ msg: registerData.msg });
         } catch (error) {
@@ -25,7 +26,7 @@ const AuthController = {
                 return res.status(400).json({ msg: login.msg });
             }
             res.cookie("authToken", login.msg, {
-                httpOnly: true, maxAge: 90000000000
+                httpOnly: true, maxAge: 90000000000, sameSite: 'none', secure: true
             })
             return res.status(200).json({ msg: "Login Successful" })
         } catch (error) {
@@ -39,7 +40,10 @@ const AuthController = {
             if (!userData.isSuccess) {
                 return res.status(userData?.statusCode || 400).json({ msg: userData.msg });
             }
-            res.clearCookie("authToken")
+            res.clearCookie("authToken", {
+                sameSite: "none",
+                secure: true
+            })
             return res.status(200).json({ msg: "Logout successful" });
         } catch (error) {
             console.error((error as Error).message);
