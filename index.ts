@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser"
 const app = express()
 const PORT = process.env.PORT || 3000
 // import path from "path";
+import default from '../frontend/postcss.config';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -37,3 +38,5 @@ app.use("/api", apiRoutes);
 app.listen(PORT, () => {
     console.log("Server is ready at port: " + PORT)
 })
+
+export default app;
