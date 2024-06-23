@@ -26,6 +26,9 @@ export async function register(req: Request) {
         user.password = await bcrypt.hash(password, salt);
         await user.save()
         const newUser = await Users.findOne({ $or: [{ email: user.email }, { username: user.username }] })
+        if (!newUser) {
+            return { isSuccess: false, msg: "There was error creating session" }
+        }
         const jwtToken = GenerateJwtToken({ id: newUser.userid })
         return {
             isSuccess: true,
