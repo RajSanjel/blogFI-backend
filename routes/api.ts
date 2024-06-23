@@ -1,9 +1,9 @@
 import express, { Express } from "express";
 import AuthRoutes from "./api/auth";
 import GetRoutes from "./api/user";
-import MediaRoutes from "./api/media"
+// import MediaRoutes from "./api/media"
 import BlogRoutes from "./api/blogs"
-import multer from "multer";
+// import multer from "multer";
 // const upload = multer({ dest: "public/" })
 const api: Express = express()
 
