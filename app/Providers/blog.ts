@@ -53,8 +53,7 @@ export async function getBlog(req: Request) {
             return { isSuccess: false, message: "No blog found" }
         }
         delete blog._id;
-        delete blog.blogid;
-        delete blog.userid;
+
         return { isSuccess: true, message: { ...blog, author: user.name } }
     } catch (error) {
         console.log((error as Error).message)
@@ -80,5 +79,28 @@ export async function getBlogs(req: Request) {
     } catch (error) {
         console.log((error as Error).message);
         return { isSuccess: false, message: "Internal server error" };
+    }
+}
+
+export async function deleteBlog(req: Request) {
+    const { blogid } = req.body;
+    const token = req.cookies.authToken;
+    if (!blogid) {
+        return { isSuccess: false, message: "No id provided." }
+    }
+    try {
+        const blog = await Blogs.findOne({ blogid });
+        const { userid } = jwtDecode(token) as Decoded;
+        if (!(blog.userid === userid)) {
+            return { isSuccess: false, message: "Unauthorized" };
+        }
+        if (!blog) {
+            return { isSuccess: false, message: "No Blog Found" };
+        }
+        await Blogs.findOneAndDelete({ blogid });
+        return { isSuccess: true, message: "Deleted" }
+    } catch (error) {
+        console.log((error as Error).message);
+        return { isSuccess: false, message: "Internal Server Error" };
     }
 }
