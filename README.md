@@ -79,4 +79,4 @@ Base path: `/api`
 
 ## Root endpoint
 
-- `GET /` returns `{"message":"Ready...."}`
+- `GET /` returns `{"message":"Ready..."}`
